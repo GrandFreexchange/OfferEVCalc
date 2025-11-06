@@ -8,9 +8,76 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        
+        :root {
+          /* Light/Blue Theme (Default) */
+          --color-bg-page: #d4f0f0;
+          --color-bg-card: #ffffff;
+          --color-bg-card-inner: #d4f0f0;
+          --color-bg-header: #003f5c;
+          --color-bg-button: #003f5c;
+          --color-bg-button-hover: #36688d;
+          --color-bg-input: #ffffff;
+          --color-bg-input-disabled: #e9ecef;
+          --color-bg-ev-pos: #d1fae5;  /* green-100 */
+          --color-bg-ev-neg: #fee2e2;  /* red-100 */
+
+          --color-text-header: #d4f0f0;
+          --color-text-header-nav: #9fcev7;
+          --color-text-header-nav-hover: #ffffff;
+          --color-text-primary: #003f5c;
+          --color-text-secondary: #36688d;
+          --color-text-muted: #36688d;
+          --color-text-input: #111827;
+          --color-text-input-disabled: #4a5568;
+          --color-text-ev-pos: #065f46;  /* green-700 */
+          --color-text-ev-neg: #991b1b;  /* red-700 */
+          --color-text-tab: #4a5568;
+          --color-text-tab-active: #003f5c;
+
+          --color-border-accent: #003f5c;
+          --color-border-accent-bright: #6699cc;
+          --color-border-input: #D1D5DB; /* gray-300 */
+          --color-border-divider: #e5e7eb; /* gray-200 */
+        }
+
+        html.dark {
+          /* Dark/Red Theme (Brimstone) */
+          --color-bg-page: #333333;
+          --color-bg-card: #444444;
+          --color-bg-card-inner: #555555;
+          --color-bg-header: #b71c1c;
+          --color-bg-button: #b71c1c;
+          --color-bg-button-hover: #d32f2f;
+          --color-bg-input: #555555;
+          --color-bg-input-disabled: #2d2d2d;
+          --color-bg-ev-pos: #1b5e20;
+          --color-bg-ev-neg: #c62828;
+
+          --color-text-header: #ffffff;
+          --color-text-header-nav: #ffffff;
+          --color-text-header-nav-hover: #ffcdd2;
+          --color-text-primary: #f5f5f5;
+          --color-text-secondary: #bbbbbb;
+          --color-text-muted: #757575;
+          --color-text-input: #f5f5f5;
+          --color-text-input-disabled: #757575;
+          --color-text-ev-pos: #c8e6c9;
+          --color-text-ev-neg: #ffcdd2;
+          --color-text-tab: #bbbbbb;
+          --color-text-tab-active: #f5f5f5;
+
+          --color-border-accent: #b71c1c;
+          --color-border-accent-bright: #d32f2f;
+          --color-border-input: #666666;
+          --color-border-divider: #6b7280; /* gray-500 */
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; 
+            background-color: var(--color-bg-page);
+            color: var(--color-text-secondary);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .chart-container {
             position: relative;
@@ -43,29 +110,89 @@
             cursor: pointer;
             border-bottom-width: 4px;
             border-color: transparent;
-            color: #4a5568; 
+            color: var(--color-text-tab);
+            transition: color 0.3s ease, border-color 0.3s ease;
         }
         .tab-btn.active {
-            color: #003f5c; 
-            border-color: #003f5c; 
+            color: var(--color-text-tab-active);
+            border-color: var(--color-border-accent-bright); 
+        }
+        input, select {
+            background-color: var(--color-bg-input);
+            color: var(--color-text-input);
+            border-color: var(--color-border-input);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        input:focus, select:focus {
+            --tw-ring-color: var(--color-border-accent-bright);
+            border-color: var(--color-border-accent-bright);
         }
         input:disabled, select:disabled {
-            background-color: #e9ecef; /* Lighter gray for disabled */
+            background-color: var(--color-bg-input-disabled);
             cursor: not-allowed;
+            color: var(--color-text-input-disabled);
         }
+        .ev-result-box {
+            background-color: var(--color-bg-card-inner);
+            color: var(--color-text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .ev-result-box.positive {
+            background-color: var(--color-bg-ev-pos);
+            color: var(--color-text-ev-pos);
+        }
+        .ev-result-box.negative {
+            background-color: var(--color-bg-ev-neg);
+            color: var(--color-text-ev-neg);
+        }
+        .card {
+            background-color: var(--color-bg-card);
+            transition: background-color 0.3s ease;
+        }
+        .header {
+            background-color: var(--color-bg-header);
+            transition: background-color 0.3s ease;
+        }
+        .button-primary {
+            background-color: var(--color-bg-button);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .button-primary:hover {
+            background-color: var(--color-bg-button-hover);
+        }
+        .text-primary { color: var(--color-text-primary); transition: color 0.3s ease; }
+        .text-secondary { color: var(--color-text-secondary); transition: color 0.3s ease; }
+        .text-muted { color: var(--color-text-muted); transition: color 0.3s ease; }
+        .text-header { color: var(--color-text-header); transition: color 0.3s ease; }
+        .text-header-nav { color: var(--color-text-header-nav); transition: color 0.3s ease; }
+        .text-header-nav:hover { color: var(--color-text-header-nav-hover); }
+        .border-divider { border-color: var(--color-border-divider); transition: border-color 0.3s ease; }
+        .border-accent { border-color: var(--color-border-accent); transition: border-color 0.3s ease; }
+        .border-accent-bright { border-color: var(--color-border-accent-bright); transition: border-color 0.3s ease; }
     </style>
 </head>
 <body class="bg-[#d4f0f0]">
 
-    <header class="bg-[#003f5c] text-white shadow-lg sticky top-0 z-50">
+    <header class="header shadow-lg sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl md:text-3xl font-bold text-[#d4f0f0]">Profitable Offer Calculator</h1>
-            <div class="flex space-x-2 md:space-x-4">
-                <a href="#calculator" class="text-[#9fcev7] hover:text-white transition-colors text-sm md:text-base">Calculator</a>
-                <a href="#ev" class="hidden md:block text-[#9fcev7] hover:text-white transition-colors">EV</a>
-                <a href="#wr" class="hidden md:block text-[#9fcev7] hover:text-white transition-colors">Wagering</a>
-                <a href="#fs" class="hidden md:block text-[#9fcev7] hover:text-white transition-colors">Free Spins</a>
-                <a href="#analysis" class="hidden md:block text-[#9fcev7] hover:text-white transition-colors">Analysis</a>
+            <h1 class="text-xl md:text-3xl font-bold text-header">Profitable Offer Calculator</h1>
+            <div class="flex items-center space-x-2 md:space-x-4">
+                <a href="#calculator" class="text-header-nav text-sm md:text-base">Calculator</a>
+                <a href="#ev" class="hidden md:block text-header-nav">EV</a>
+                <a href="#wr" class="hidden md:block text-header-nav">Wagering</a>
+                <a href="#fs" class="hidden md:block text-header-nav">Free Spins</a>
+                <a href="#analysis" class="hidden md:block text-header-nav">Analysis</a>
+                
+                <!-- Theme Toggle -->
+                <div class="flex items-center space-x-2 ml-2">
+                    <span class="text-sm text-header-nav hidden sm:inline">Light</span>
+                    <label for="themeToggle" class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="themeToggle" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-400 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#d32f2f]"></div>
+                    </label>
+                    <span class="text-sm text-header-nav hidden sm:inline">Dark</span>
+                </div>
             </div>
         </nav>
     </header>
@@ -73,10 +200,10 @@
     <main class="container mx-auto p-4 md:p-8">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <section id="calculator" class="md:col-span-2 bg-white rounded-lg shadow-xl p-6 md:p-8">
-                <h2 class="text-3xl font-bold text-[#003f5c] mb-6">Welcome Offer EV Calculator</h2>
+            <section id="calculator" class="md:col-span-2 card rounded-lg shadow-xl p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-primary mb-6">Welcome Offer EV Calculator</h2>
                 
-                <div class="mb-6 border-b border-gray-200">
+                <div class="mb-6 border-b border-divider">
                     <button id="cashTabBtn" class="tab-btn active">Cash Bonus</button>
                     <button id="spinsTabBtn" class="tab-btn">Free Spins</button>
                 </div>
@@ -84,49 +211,49 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <div id="cashBonusCalc">
-                            <h3 class="text-xl font-semibold text-[#36688d] mb-4">Cash Bonus Calculator</h3>
+                            <h3 class="text-xl font-semibold text-primary mb-4">Cash Bonus Calculator</h3>
                             <div class="space-y-4">
                                 <div>
-                                    <label for="bonusAmount" class="block text-sm font-medium text-gray-700">Bonus Value (£)</label>
-                                    <input type="number" id="bonusAmount" value="50" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                    <label for="bonusAmount" class="block text-sm font-medium text-secondary">Bonus Value (£)</label>
+                                    <input type="number" id="bonusAmount" value="50" class="mt-1 block w-full p-2 border rounded-md shadow-sm">
                                 </div>
                                 
                                 <div id="depositAmountContainer" class="hidden">
-                                    <label for="depositAmount" class="block text-sm font-medium text-gray-700">Deposit Amount (£)</label>
-                                    <input type="number" id="depositAmount" value="50" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                    <label for="depositAmount" class="block text-sm font-medium text-secondary">Deposit Amount (£)</label>
+                                    <input type="number" id="depositAmount" value="50" class="mt-1 block w-full p-2 border rounded-md shadow-sm">
                                 </div>
 
                                 <div>
-                                    <label for="wageringReq" class="block text-sm font-medium text-gray-700">Wagering Requirement</label>
+                                    <label for="wageringReq" class="block text-sm font-medium text-secondary">Wagering Requirement</label>
                                     <div class="mt-1 flex rounded-md shadow-sm">
-                                        <input type="number" id="wageringReq" value="30" class="flex-1 block w-full min-w-0 p-2 border border-gray-300 rounded-l-md focus:ring-[#6699cc] focus:border-[#6699cc]">
-                                        <select id="wageringReqType" class="inline-flex items-center px-3 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-700 text-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                        <input type="number" id="wageringReq" value="30" class="flex-1 block w-full min-w-0 p-2 border rounded-l-md">
+                                        <select id="wageringReqType" class="inline-flex items-center px-3 border border-l-0 rounded-r-md text-sm">
                                             <option value="multiplier" selected>x (Multiplier)</option>
                                             <option value="currency">£ (Currency)</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div>
-                                    <label for="wageringTypeSelect" class="block text-sm font-medium text-gray-700">Wagering On</label>
-                                    <select id="wageringTypeSelect" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                    <label for="wageringTypeSelect" class="block text-sm font-medium text-secondary">Wagering On</label>
+                                    <select id="wageringTypeSelect" class="mt-1 block w-full p-2 border rounded-md shadow-sm">
                                         <option value="bonus_only">Bonus Only</option>
                                         <option value="bonus_deposit">Bonus + Deposit</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="gameRTP" class="block text-sm font-medium text-gray-700">Wagering Game RTP (%)</label>
-                                    <input type="number" id="gameRTP" value="96" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                    <label for="gameRTP" class="block text-sm font-medium text-secondary">Wagering Game RTP (%)</label>
+                                    <input type="number" id="gameRTP" value="96" class="mt-1 block w-full p-2 border rounded-md shadow-sm">
                                 </div>
-                                <button id="calculateCashEV" class="w-full bg-[#003f5c] text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-[#36688d] transition-colors">Calculate Cash EV</button>
+                                <button id="calculateCashEV" class="w-full button-primary font-bold py-3 px-4 rounded-lg shadow-md">Calculate Cash EV</button>
                             </div>
                         </div>
 
                         <div id="freeSpinsCalc" class="hidden">
-                            <h3 class="text-xl font-semibold text-[#36688d] mb-4">Free Spins Calculator</h3>
+                            <h3 class="text-xl font-semibold text-primary mb-4">Free Spins Calculator</h3>
                             <div class="space-y-4">
                                 <div>
-                                    <label for="offerDropdown" class="block text-sm font-medium text-gray-700">Load Popular Offer</label>
-                                    <select id="offerDropdown" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                    <label for="offerDropdown" class="block text-sm font-medium text-secondary">Load Popular Offer</label>
+                                    <select id="offerDropdown" class="mt-1 block w-full p-2 border rounded-md shadow-sm">
                                         <option value="custom">-- Select an Offer --</option>
                                         <option value="offer1">100 Spins (0x Wager)</option>
                                         <option value="offer2">200 Spins (35x Wager)</option>
@@ -135,41 +262,41 @@
                                         <option value="offer5">50 Spins (Wager £200)</option>
                                     </select>
                                 </div>
-                                <div class="border-t border-gray-200 pt-4">
-                                    <label for="numSpins" class="block text-sm font-medium text-gray-700">Number of Spins</label>
-                                    <input type="number" id="numSpins" value="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                <div class="border-t border-divider pt-4">
+                                    <label for="numSpins" class="block text-sm font-medium text-secondary">Number of Spins</label>
+                                    <input type="number" id="numSpins" value="100" class="mt-1 block w-full p-2 border rounded-md shadow-sm">
                                 </div>
                                 <div>
-                                    <label for="spinValue" class="block text-sm font-medium text-gray-700">Value per Spin (£)</label>
-                                    <input type="number" step="0.01" id="spinValue" value="0.10" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                    <label for="spinValue" class="block text-sm font-medium text-secondary">Value per Spin (£)</label>
+                                    <input type="number" step="0.01" id="spinValue" value="0.10" class="mt-1 block w-full p-2 border rounded-md shadow-sm">
                                 </div>
                                 <div>
-                                    <label for="spinRTP" class="block text-sm font-medium text-gray-700">Spin Game RTP (%)</label>
-                                    <input type="number" id="spinRTP" value="96" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                    <label for="spinRTP" class="block text-sm font-medium text-secondary">Spin Game RTP (%)</label>
+                                    <input type="number" id="spinRTP" value="96" class="mt-1 block w-full p-2 border rounded-md shadow-sm">
                                 </div>
                                 <div>
-                                    <label for="winningsWR" class="block text-sm font-medium text-gray-700">Wagering Req. on Winnings</label>
+                                    <label for="winningsWR" class="block text-sm font-medium text-secondary">Wagering Req. on Winnings</label>
                                     <div class="mt-1 flex rounded-md shadow-sm">
-                                        <input type="number" id="winningsWR" value="0" class="flex-1 block w-full min-w-0 p-2 border border-gray-300 rounded-l-md focus:ring-[#6699cc] focus:border-[#6699cc]">
-                                        <select id="winningsWRType" class="inline-flex items-center px-3 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-700 text-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                        <input type="number" id="winningsWR" value="0" class="flex-1 block w-full min-w-0 p-2 border rounded-l-md">
+                                        <select id="winningsWRType" class="inline-flex items-center px-3 border border-l-0 rounded-r-md text-sm">
                                             <option value="multiplier" selected>x (Multiplier)</option>
                                             <option value="currency">£ (Currency)</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div>
-                                    <label for="wagerRTP" class="block text-sm font-medium text-gray-700">Wagering Game RTP (%)</label>
-                                    <input type="number" id="wagerRTP" value="96" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#6699cc] focus:border-[#6699cc]">
+                                    <label for="wagerRTP" class="block text-sm font-medium text-secondary">Wagering Game RTP (%)</label>
+                                    <input type="number" id="wagerRTP" value="96" class="mt-1 block w-full p-2 border rounded-md shadow-sm">
                                 </div>
-                                <button id="calculateSpinsEV" class="w-full bg-[#003f5c] text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-[#36688d] transition-colors">Calculate Spins EV</button>
+                                <button id="calculateSpinsEV" class="w-full button-primary font-bold py-3 px-4 rounded-lg shadow-md">Calculate Spins EV</button>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="flex flex-col items-center justify-center bg-[#d4f0f0] rounded-lg p-6 shadow-inner">
-                        <h3 class="text-xl font-semibold text-[#36688d] mb-4">Calculated Expected Value</h3>
+                    <div class="flex flex-col items-center justify-center rounded-lg p-6 shadow-inner" style="background-color: var(--color-bg-card-inner);">
+                        <h3 class="text-xl font-semibold text-primary mb-4">Calculated Expected Value</h3>
                         <div id="evResult" class="w-full">
-                            <div id="evResultValue" class="text-5xl md:text-6xl font-extrabold text-center p-4 rounded-lg bg-gray-100 text-gray-800">
+                            <div id="evResultValue" class="ev-result-box text-5xl md:text-6xl font-extrabold text-center p-4 rounded-lg">
                                 £--.--
                             </div>
                         </div>
@@ -177,124 +304,124 @@
                 </div>
             </section>
 
-            <section id="ev" class="md:col-span-2 bg-white rounded-lg shadow-xl p-6 md:p-8">
-                <h2 class="text-3xl font-bold text-[#003f5c] mb-4">Understanding Expected Value (EV)</h2>
-                <p class="text-lg text-[#36688d] mb-6">
+            <section id="ev" class="md:col-span-2 card rounded-lg shadow-xl p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-primary mb-4">Understanding Expected Value (EV)</h2>
+                <p class="text-lg text-secondary mb-6">
                     In betting, as in markets, every decision has an Expected Value (EV). A profitable offer is simply one with a positive EV (+EV). This is calculated by finding the value of the bonus and subtracting the cost of acquiring it (the "cost of wagering"). We aim to find offers where the bonus significantly outweighs the cost.
                 </p>
-                <div class="bg-[#d4f0f0] rounded-lg p-8 text-center shadow-inner">
-                    <h3 class="text-xl font-semibold text-[#36688d] mb-2">Typical +EV Target</h3>
-                    <div class="text-6xl md:text-7xl font-extrabold text-[#003f5c]">+£20.50 EV</div>
-                    <p class="text-lg text-[#36688d] mt-2">
+                <div class="rounded-lg p-8 text-center shadow-inner" style="background-color: var(--color-bg-card-inner);">
+                    <h3 class="text-xl font-semibold text-primary mb-2">Typical +EV Target</h3>
+                    <div class="text-6xl md:text-7xl font-extrabold" style="color: var(--color-border-accent-bright);">+£20.50 EV</div>
+                    <p class="text-lg text-secondary mt-2">
                         (e.g., £100 Bonus @ 30x Wagering, 97% RTP Slot)
                     </p>
                 </div>
             </section>
 
-            <section id="wr" class="bg-white rounded-lg shadow-xl p-6">
-                <h2 class="text-2xl font-bold text-[#003f5c] mb-4">The Cost: Wagering Requirement (WR)</h2>
-                <p class="text-base text-[#36688d] mb-6">
+            <section id="wr" class="card rounded-lg shadow-xl p-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">The Cost: Wagering Requirement (WR)</h2>
+                <p class="text-base text-secondary mb-6">
                     The Wagering Requirement is the primary cost. It dictates how much you must bet to unlock the bonus. The cost is the total wager multiplied by the game's house edge (100% - RTP). As WR increases, the offer's EV collapses.
                 </p>
                 <div class="chart-container">
                     <canvas id="wrChart"></canvas>
                 </div>
-                <p class="text-sm text-center text-[#36688d] mt-4">
+                <p class="text-sm text-center text-secondary mt-4">
                     Key Takeaway: EV turns negative around the 40x-50x WR mark for most bonuses. Low WR (sub-30x) is the primary signal of a profitable offer.
                 </p>
             </section>
 
-            <section class="bg-white rounded-lg shadow-xl p-6">
-                <h2 class="text-2xl font-bold text-[#003f5c] mb-4">Profit vs. Cost Breakdown</h2>
-                <p class="text-base text-[#36688d] mb-6">
+            <section class="card rounded-lg shadow-xl p-6">
+                <h2 class="text-2xl font-bold text-primary mb-4">Profit vs. Cost Breakdown</h2>
+                <p class="text-base text-secondary mb-6">
                     This example shows a £50 bonus with a 25x WR on a 96% RTP slot. The total wagering cost (£50 * 25 * 4%) is £50. This is a break-even, £0 EV offer. Any lower WR or higher RTP makes it profitable.
                 </p>
                 <div class="chart-container-sm">
                     <canvas id="donutChart"></canvas>
                 </div>
-                <p class="text-sm text-center text-[#36688d] mt-4">
+                <p class="text-sm text-center text-secondary mt-4">
                     Key Takeaway: Visualizing the EV as a "profit margin" helps quickly identify how much "edge" an offer has.
                 </p>
             </section>
 
-            <section id="fs" class="md:col-span-2 bg-white rounded-lg shadow-xl p-6 md:p-8">
-                <h2 class="text-2xl font-bold text-[#003f5c] mb-4">The "Free Spin" Fallacy</h2>
-                <p class="text-lg text-[#36688d] mb-6">
+            <section id="fs" class="md:col-span-2 card rounded-lg shadow-xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-primary mb-4">The "Free Spin" Fallacy</h2>
+                <p class="text-lg text-secondary mb-6">
                     Free Spin (FS) offers are the most deceptive. Their value is not the number of spins, but the EV of their *winnings*. Offers with "0x Wager" (keep what you win) are highly profitable. Offers with high WR (e.g., 35x) on winnings often have a negative EV, as the cost to wager the winnings exceeds the winnings themselves.
                 </p>
                 <div class="chart-container">
                     <canvas id="fsChart"></canvas>
                 </div>
-                <p class="text-sm text-center text-[#36688d] mt-4">
+                <p class="text-sm text-center text-secondary mt-4">
                     Key Takeaway: Always hunt for 0x or low-wager (sub-10x) free spins. 100 spins at 0x WR is vastly superior to 300 spins at 50x WR.
                 </p>
             </section>
 
-            <section id="analysis" class="md:col-span-2 bg-white rounded-lg shadow-xl p-6 md:p-8">
-                <h2 class="text-3xl font-bold text-[#003f5c] mb-6">Analysis & Process</h2>
+            <section id="analysis" class="md:col-span-2 card rounded-lg shadow-xl p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-primary mb-6">Analysis & Process</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-[#003f5c] mb-4">Offer Analysis Process</h2>
+                        <h2 class="text-2xl font-bold text-primary mb-4">Offer Analysis Process</h2>
                         <div class="flex flex-col space-y-2">
-                            <div class="bg-[#d4f0f0] border-l-4 border-[#6699cc] text-[#003f5c] p-4 rounded-r-lg shadow">
-                                <h3 class="font-bold">1. Identify Bonus Value</h3>
-                                <p class="text-sm">£ Bonus OR (Spins x Spin Value)</p>
+                            <div class="border-l-4 rounded-r-lg shadow p-4 border-accent-bright" style="background-color: var(--color-bg-card-inner);">
+                                <h3 class="font-bold text-primary">1. Identify Bonus Value</h3>
+                                <p class="text-sm text-secondary">£ Bonus OR (Spins x Spin Value)</p>
                             </div>
-                            <div class="self-center text-2xl text-[#36688d] font-bold">▼</div>
-                            <div class="bg-[#d4f0f0] border-l-4 border-[#6699cc] text-[#003f5c] p-4 rounded-r-lg shadow">
-                                <h3 class="font-bold">2. Find Wagering Requirement (WR)</h3>
-                                <p class="text-sm">Is it a multiplier (x) or currency (£)? Is it on (B) or (B+D)?</p>
+                            <div class="self-center text-2xl text-secondary font-bold">▼</div>
+                            <div class="border-l-4 rounded-r-lg shadow p-4 border-accent-bright" style="background-color: var(--color-bg-card-inner);">
+                                <h3 class="font-bold text-primary">2. Find Wagering Requirement (WR)</h3>
+                                <p class="text-sm text-secondary">Is it a multiplier (x) or currency (£)? Is it on (B) or (B+D)?</p>
                             </div>
-                            <div class="self-center text-2xl text-[#36688d] font-bold">▼</div>
-                            <div class="bg-[#d4f0f0] border-l-4 border-[#6699cc] text-[#003f5c] p-4 rounded-r-lg shadow">
-                                <h3 class="font-bold">3. Calculate Total Wager (TW)</h3>
-                                <p class="text-sm">e.g., (B+D) * WR (multiplier) OR Fixed £ Amount (currency)</p>
+                            <div class="self-center text-2xl text-secondary font-bold">▼</div>
+                            <div class="border-l-4 rounded-r-lg shadow p-4 border-accent-bright" style="background-color: var(--color-bg-card-inner);">
+                                <h3 class="font-bold text-primary">3. Calculate Total Wager (TW)</h3>
+                                <p class="text-sm text-secondary">e.g., (B+D) * WR (multiplier) OR Fixed £ Amount (currency)</p>
                             </div>
-                            <div class="self-center text-2xl text-[#36688d] font-bold">▼</div>
-                            <div class="bg-[#d4f0f0] border-l-4 border-[#6699cc] text-[#003f5c] p-4 rounded-r-lg shadow">
-                                <h3 class="font-bold">4. Determine Wagering Cost (WC)</h3>
-                                <p class="text-sm">TW * (100% - RTP). Use ~96-97% RTP for slots.</p>
+                            <div class="self-center text-2xl text-secondary font-bold">▼</div>
+                            <div class="border-l-4 rounded-r-lg shadow p-4 border-accent-bright" style="background-color: var(--color-bg-card-inner);">
+                                <h3 class="font-bold text-primary">4. Determine Wagering Cost (WC)</h3>
+                                <p class="text-sm text-secondary">TW * (100% - RTP). Use ~96-97% RTP for slots.</p>
                             </div>
-                            <div class="self-center text-2xl text-[#36688d] font-bold">▼</div>
-                            <div class="bg-white border-2 border-[#003f5c] text-[#003f5c] p-4 rounded-lg shadow-lg text-center">
-                                <h3 class="font-bold">EV = Bonus Value - Wagering Cost</h3>
-                                <p class="text-sm font-bold">(If > 0, it's a +EV offer)</p>
+                            <div class="self-center text-2xl text-secondary font-bold">▼</div>
+                            <div class="border-2 rounded-lg shadow-lg text-center p-4 border-accent">
+                                <h3 class="font-bold text-primary">EV = Bonus Value - Wagering Cost</h3>
+                                <p class="text-sm font-bold text-primary">(If > 0, it's a +EV offer)</p>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-bold text-[#003f5c] mb-4">Profitability Checklist</h2>
-                        <p class="text-base text-[#36688d] mb-6">
+                        <h2 class="text-2xl font-bold text-primary mb-4">Profitability Checklist</h2>
+                        <p class="text-base text-secondary mb-6">
                             Use this checklist to find the key data points in the T&Cs.
                         </p>
                         <ul class="space-y-3">
                             <li class="flex items-center text-lg">
-                                <span class="text-2xl text-[#6699cc] mr-3">✓</span>
-                                <span class="text-[#36688d]">Wagering Requirement: <strong class="text-[#003f5c]">Low (0x-30x or low £)</strong></span>
+                                <span class="text-2xl mr-3" style="color: var(--color-border-accent-bright);">✓</span>
+                                <span class="text-secondary">Wagering Requirement: <strong class="text-primary">Low (0x-30x or low £)</strong></span>
                             </li>
                             <li class="flex items-center text-lg">
-                                <span class="text-2xl text-[#6699cc] mr-3">✓</span>
-                                <span class="text-[#36688d]">Wagering On: <strong class="text-[#003f5c]">Bonus only</strong> (if multiplier)</span>
+                                <span class="text-2xl mr-3" style="color: var(--color-border-accent-bright);">✓</span>
+                                <span class="text-secondary">Wagering On: <strong class="text-primary">Bonus only</strong> (if multiplier)</span>
                             </li>
                             <li class="flex items-center text-lg">
-                                <span class="text-2xl text-[#6699cc] mr-3">✓</span>
-                                <span class="text-[#36688d]">Eligible Games: <strong class="text-[#003f5c]">High RTP (96%+)</strong></span>
+                                <span class="text-2xl mr-3" style="color: var(--color-border-accent-bright);">✓</span>
+                                <span class="text-secondary">Eligible Games: <strong class="text-primary">High RTP (96%+)</strong></span>
                             </li>
                             <li class="flex items-center text-lg">
-                                <span class="text-2xl text-[#6699cc] mr-3">✓</span>
-                                <span class="text-[#36688d]">Game Contribution: <strong class="text-[#003f5c]">100%</strong></span>
+                                <span class="text-2xl mr-3" style="color: var(--color-border-accent-bright);">✓</span>
+                                <span class="text-secondary">Game Contribution: <strong class="text-primary">100%</strong></span>
                             </li>
                             <li class="flex items-center text-lg">
-                                <span class="text-2xl text-[#6699cc] mr-3">✓</span>
-                                <span class="text-[#36688d]">Max Win Cap: <strong class="text-[#003f5c]">None or High</strong></span>
+                                <span class="text-2xl mr-3" style="color: var(--color-border-accent-bright);">✓</span>
+                                <span class="text-secondary">Max Win Cap: <strong class="text-primary">None or High</strong></span>
                             </li>
                             <li class="flex items-center text-lg">
-                                <span class="text-2xl text-[#6699cc] mr-3">✓</span>
-                                <span class="text-[#36688d]">Max Bet: <strong class="text-[#003f5c]">High (e.g., £5)</strong></span>
+                                <span class="text-2xl mr-3" style="color: var(--color-border-accent-bright);">✓</span>
+                                <span class="text-secondary">Max Bet: <strong class="text-primary">High (e.g., £5)</strong></span>
                             </li>
                             <li class="flex items-center text-lg">
-                                <span class="text-2xl text-[#6699cc] mr-3">✓</span>
-                                <span class="text-[#36688d]">Time Limit: <strong class="text-[#003f5c]">Reasonable (7+ days)</strong></span>
+                                <span class="text-2xl mr-3" style="color: var(--color-border-accent-bright);">✓</span>
+                                <span class="text-secondary">Time Limit: <strong class="text-primary">Reasonable (7+ days)</strong></span>
                             </li>
                         </ul>
                     </div>
@@ -304,19 +431,26 @@
     </main>
 
     <footer class="text-center p-6 mt-8">
-        <p class="text-sm text-[#36688d]">Data visualization and tools for informational purposes. Always read all terms and conditions.</p>
+        <p class="text-sm text-muted">Data visualization and tools for informational purposes. Always read all terms and conditions.</p>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            const palette = {
-                primary: '#003f5c',
-                secondary: '#36688d',
-                accent1: '#6699cc',
-                accent2: '#9fcev7',
-                light: '#d4f0f0'
-            };
+            let wrChartInstance, donutChartInstance, fsChartInstance;
+
+            function getThemeColors() {
+                const styles = getComputedStyle(document.documentElement);
+                return {
+                    primary: styles.getPropertyValue('--color-border-accent').trim(),
+                    secondary: styles.getPropertyValue('--color-text-secondary').trim(),
+                    accent1: styles.getPropertyValue('--color-border-accent-bright').trim(),
+                    text: styles.getPropertyValue('--color-text-secondary').trim(),
+                    grid: styles.getPropertyValue('--color-border-input').trim(),
+                    cardBg: styles.getPropertyValue('--color-bg-card').trim(),
+                    textPrimary: styles.getPropertyValue('--color-text-primary').trim()
+                };
+            }
 
             const chartTooltipCallback = {
                 callbacks: {
@@ -350,102 +484,111 @@
                 return lines;
             };
 
-            const ctxWR = document.getElementById('wrChart');
-            if (ctxWR) {
-                new Chart(ctxWR, {
-                    type: 'bar',
-                    data: {
-                        labels: ['0x WR', '10x WR', '20x WR', '35x WR', '50x WR'],
-                        datasets: [{
-                            label: 'Expected Value (£)',
-                            data: [100, 60, 20, -50, -130],
-                            backgroundColor: [palette.accent1, palette.accent1, palette.accent1, palette.secondary, palette.primary],
-                            borderColor: palette.primary,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        maintainAspectRatio: false,
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: chartTooltipCallback
+            function createCharts() {
+                const colors = getThemeColors();
+
+                if (wrChartInstance) wrChartInstance.destroy();
+                if (donutChartInstance) donutChartInstance.destroy();
+                if (fsChartInstance) fsChartInstance.destroy();
+
+                const ctxWR = document.getElementById('wrChart');
+                if (ctxWR) {
+                    wrChartInstance = new Chart(ctxWR, {
+                        type: 'bar',
+                        data: {
+                            labels: ['0x WR', '10x WR', '20x WR', '35x WR', '50x WR'],
+                            datasets: [{
+                                label: 'Expected Value (£)',
+                                data: [100, 60, 20, -50, -130],
+                                backgroundColor: [colors.accent1, colors.accent1, colors.accent1, colors.secondary, colors.primary],
+                                borderColor: colors.primary,
+                                borderWidth: 1
+                            }]
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: { color: '#e0e0e0' },
-                                ticks: { color: palette.secondary }
+                        options: {
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: chartTooltipCallback
                             },
-                            x: {
-                                grid: { display: false },
-                                ticks: { color: palette.secondary }
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: colors.grid },
+                                    ticks: { color: colors.text }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { color: colors.text }
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
+
+                const ctxDonut = document.getElementById('donutChart');
+                if (ctxDonut) {
+                    donutChartInstance = new Chart(ctxDonut, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Wagering Cost (£50)', 'Expected Profit (£0)'],
+                            datasets: [{
+                                label: 'EV Breakdown',
+                                data: [50, 0],
+                                backgroundColor: [colors.secondary, colors.accent1],
+                                borderColor: colors.cardBg,
+                                borderWidth: 3
+                            }]
+                        },
+                        options: {
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            plugins: {
+                                legend: { position: 'bottom', labels: { color: colors.textPrimary } },
+                                tooltip: chartTooltipCallback
+                            }
+                        }
+                    });
+                }
+                
+                const ctxFS = document.getElementById('fsChart');
+                if (ctxFS) {
+                    fsChartInstance = new Chart(ctxFS, {
+                        type: 'bar',
+                        data: {
+                            labels: ['100 FS (0x Wager)', '200 FS (35x Wager)', wrapLabel('300 FS (50x Wager on Winnings)')],
+                            datasets: [{
+                                label: 'Expected Value (£)',
+                                data: [9.60, -3.84, -13.60],
+                                backgroundColor: [colors.accent1, colors.secondary, colors.primary],
+                                borderColor: colors.primary,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: chartTooltipCallback
+                            },
+                            scales: {
+                                y: {
+                                    grid: { color: colors.grid },
+                                    ticks: { color: colors.text }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { color: colors.text }
+                                }
+                            },
+                            indexAxis: 'y',
+                        }
+                    });
+                }
             }
 
-            const ctxDonut = document.getElementById('donutChart');
-            if (ctxDonut) {
-                new Chart(ctxDonut, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Wagering Cost (£50)', 'Expected Profit (£0)'],
-                        datasets: [{
-                            label: 'EV Breakdown',
-                            data: [50, 0],
-                            backgroundColor: [palette.secondary, palette.accent1],
-                            borderColor: '#ffffff',
-                            borderWidth: 3
-                        }]
-                    },
-                    options: {
-                        maintainAspectRatio: false,
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'bottom', labels: { color: palette.primary } },
-                            tooltip: chartTooltipCallback
-                        }
-                    }
-                });
-            }
-            
-            const ctxFS = document.getElementById('fsChart');
-            if (ctxFS) {
-                new Chart(ctxFS, {
-                    type: 'bar',
-                    data: {
-                        labels: ['100 FS (0x Wager)', '200 FS (35x Wager)', wrapLabel('300 FS (50x Wager on Winnings)')],
-                        datasets: [{
-                            label: 'Expected Value (£)',
-                            data: [9.60, -3.84, -13.60],
-                            backgroundColor: [palette.accent1, palette.secondary, palette.primary],
-                            borderColor: palette.primary,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        maintainAspectRatio: false,
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: chartTooltipCallback
-                        },
-                        scales: {
-                            y: {
-                                grid: { color: '#e0e0e0' },
-                                ticks: { color: palette.secondary }
-                            },
-                            x: {
-                                grid: { display: false },
-                                ticks: { color: palette.secondary }
-                            }
-                        },
-                        indexAxis: 'y',
-                    }
-                });
-            }
 
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -487,19 +630,17 @@
             const evResultValue = document.getElementById('evResultValue');
 
             function displayEV(ev) {
+                evResultValue.classList.remove('positive', 'negative');
                 if (isNaN(ev)) {
                     evResultValue.textContent = 'Invalid Input';
-                    evResultValue.classList.remove('bg-green-100', 'text-green-700', 'bg-red-100', 'text-red-700');
-                    evResultValue.classList.add('bg-gray-100', 'text-gray-800');
                     return;
                 }
 
                 evResultValue.textContent = `£${ev.toFixed(2)}`;
-                evResultValue.classList.remove('bg-gray-100', 'text-gray-800', 'bg-green-100', 'text-green-700', 'bg-red-100', 'text-red-700');
                 if (ev > 0) {
-                    evResultValue.classList.add('bg-green-100', 'text-green-700');
+                    evResultValue.classList.add('positive');
                 } else {
-                    evResultValue.classList.add('bg-red-100', 'text-red-700');
+                    evResultValue.classList.add('negative');
                 }
             }
 
@@ -538,7 +679,7 @@
                 const rtp = parseFloat(document.getElementById('gameRTP').value);
                 
                 const wrValue = parseFloat(document.getElementById('wageringReq').value);
-                const wrUnit = document.getElementById('wageringReqType').value;
+                const wrUnit = document.getElementById('wageringReqType').prope;
                 const wrType = document.getElementById('wageringTypeSelect').value;
 
                 if (isNaN(bonus) || isNaN(rtp) || isNaN(wrValue)) {
@@ -552,7 +693,7 @@
                     if (wrType === 'bonus_only') {
                         totalWager = bonus * wr;
                     } else {
-                        if (isNaN(deposit)) { 
+                        if (isNaN(deposit) && !depositAmountContainer.classList.contains('hidden')) { 
                             displayEV(NaN); // Deposit is required but not valid
                             return;
                         }
@@ -627,6 +768,33 @@
                 const ev = expectedWinnings - wageringCost;
 
                 displayEV(ev);
+            });
+
+            // --- Theme Toggle Logic ---
+            const themeToggle = document.getElementById('themeToggle');
+            const htmlElement = document.documentElement;
+
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    htmlElement.classList.add('dark');
+                    themeToggle.checked = true;
+                } else {
+                    htmlElement.classList.remove('dark');
+                    themeToggle.checked = false;
+                }
+                // Re-create charts with the new theme colors
+                createCharts();
+            }
+
+            // 1. On Load: Check saved theme and create initial charts
+            const savedTheme = localStorage.getItem('theme') || 'light'; // Default to light
+            applyTheme(savedTheme);
+
+            // 2. On Toggle: Listen for changes
+            themeToggle.addEventListener('change', () => {
+                const newTheme = themeToggle.checked ? 'dark' : 'light';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
             });
         });
     </script>
