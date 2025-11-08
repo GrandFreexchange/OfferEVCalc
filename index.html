@@ -679,7 +679,10 @@
                 const rtp = parseFloat(document.getElementById('gameRTP').value);
                 
                 const wrValue = parseFloat(document.getElementById('wageringReq').value);
-                const wrUnit = document.getElementById('wageringReqType').prope;
+                // --- FIX ---
+                // Changed .prope to .value
+                const wrUnit = document.getElementById('wageringReqType').value; 
+                // --- END FIX ---
                 const wrType = document.getElementById('wageringTypeSelect').value;
 
                 if (isNaN(bonus) || isNaN(rtp) || isNaN(wrValue)) {
@@ -699,7 +702,7 @@
                         }
                         totalWager = (bonus + deposit) * wr;
                     }
-                } else {
+                } else { // 'currency'
                     totalWager = wrValue;
                 }
 
